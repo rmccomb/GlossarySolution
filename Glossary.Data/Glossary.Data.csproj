@@ -86,9 +86,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Glossary.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="dbo.Definition.sql" />
     <Content Include="GlossaryModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GlossaryModel.Context.cs</LastGenOutput>
@@ -99,10 +97,6 @@
       <DependentUpon>GlossaryModel.edmx</DependentUpon>
       <LastGenOutput>GlossaryModel.cs</LastGenOutput>
     </Content>
-    <Content Include="Glossary_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>Glossary.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="GlossaryModel.edmx">
@@ -111,7 +105,9 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="GlossaryModel.edmx.diagram">
       <DependentUpon>GlossaryModel.edmx</DependentUpon>
     </None>

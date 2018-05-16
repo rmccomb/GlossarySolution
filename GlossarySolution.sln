@@ -7,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glossary.Web", "GlossarySol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glossary.Data", "Glossary.Data\Glossary.Data.csproj", "{9214AAB3-2C29-4093-98D5-2BFA8351D4FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glossary.Tests", "Glossary.Tests\Glossary.Tests.csproj", "{8A0982DB-9093-4ED5-B113-DB3B0273ADB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{10A8FFF1-5CA2-4EDC-A26D-A3E438F1EFF4}"
+	ProjectSection(SolutionItems) = preProject
+		Glossary.mdf = Glossary.mdf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +28,10 @@ Global
 		{9214AAB3-2C29-4093-98D5-2BFA8351D4FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9214AAB3-2C29-4093-98D5-2BFA8351D4FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9214AAB3-2C29-4093-98D5-2BFA8351D4FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A0982DB-9093-4ED5-B113-DB3B0273ADB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A0982DB-9093-4ED5-B113-DB3B0273ADB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A0982DB-9093-4ED5-B113-DB3B0273ADB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A0982DB-9093-4ED5-B113-DB3B0273ADB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
