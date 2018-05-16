@@ -481,6 +481,13 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="M:GlossarySolution.Controllers.DefinitionsController.GetDefinition(System.String)">
+            <summary>
+            Get the definition of a given term
+            </summary>
+            <param name="term">The term to lookup</param>
+            <returns>The definition of the term</returns>
+        </member>
         <member name="M:GlossarySolution.Controllers.ValuesController.Delete(System.Int32)">
             <summary>
             Delete an item
