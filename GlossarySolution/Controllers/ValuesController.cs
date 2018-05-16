@@ -32,6 +32,10 @@ namespace GlossarySolution.Controllers
         }
 
         // DELETE api/values/5
+        /// <summary>
+        /// Delete an item
+        /// </summary>
+        /// <param name="id"></param>
         public void Delete(int id)
         {
         }
