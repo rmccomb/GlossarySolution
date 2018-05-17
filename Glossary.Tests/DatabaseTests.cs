@@ -32,11 +32,11 @@ namespace Glossary.Tests
                 }
 
                 ctx.Definitions.AddRange(
-                    new Data.Definition[]
+                    new Definition[]
                     {
-                        new Data.Definition { Term = "abyssal plain", TermDefinition = "The ocean floor off the continental margin, usually very flat with a slight slope." },
-                        new Data.Definition { Term="accrete", TermDefinition="To add terranes (small land masses or pieces of crust) to another, usually larger, land mass." },
-                        new Data.Definition { Term="alkaline", TermDefinition = "Term pertaining to highly basic, as opposed to acidic, substance" }
+                        new Definition { Term = "abyssal plain", TermDefinition = "The ocean floor off the continental margin, usually very flat with a slight slope." },
+                        new Definition { Term="accrete", TermDefinition="To add terranes (small land masses or pieces of crust) to another, usually larger, land mass." },
+                        new Definition { Term="alkaline", TermDefinition = "Term pertaining to highly basic, as opposed to acidic, substance" }
                     });
                 ctx.SaveChanges();
             }

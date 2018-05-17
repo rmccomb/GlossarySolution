@@ -19,6 +19,11 @@ namespace Glossary.Tests.External
         public string TermDefinition;
     }
 
+    public class DefinitionResponse
+    {
+        public int RecordsUpdated;
+    }
+
     /// <summary>
     /// External API tests
     /// </summary>
@@ -27,8 +32,7 @@ namespace Glossary.Tests.External
     {
         static readonly Uri uri = new Uri("http://localhost:59650/api/");
 
-        [TestInitialize]
-        public void GivenEmptyDataset()
+        private void GivenEmptyDataset()
         {
             using (var ctx = new Data.GlossaryEntities())
             {
@@ -36,6 +40,7 @@ namespace Glossary.Tests.External
                 {
                     var defs = from d in ctx.Definitions select d;
                     ctx.Definitions.RemoveRange(defs);
+                    ctx.SaveChanges();
                 }
             }
         }
@@ -51,25 +56,44 @@ namespace Glossary.Tests.External
         }
 
         [TestMethod]
-        public void GetTerms()
+        public void GetExistingTerms()
         {
             var resp = MakeUrlGetRequest("Definitions");
-            Debug.WriteLine(resp);
+            //Debug.WriteLine(resp);
             var definitions = new JavaScriptSerializer().Deserialize<Definition[]>(resp);
             Assert.IsNotNull(definitions);
             definitions.ToList().ForEach(d => Debug.WriteLine($"{d.Term} {d.TermDefinition}"));
         }
 
         [TestMethod]
-        public void PostTerms()
+        public void PostNewTerms()
         {
+            GivenEmptyDataset();
             var terms = GivenTerms();
-            var json = new JavaScriptSerializer().Serialize(terms);
-            Debug.WriteLine(json);
 
+            var json = new JavaScriptSerializer().Serialize(terms);
             var resp = MakeHttpPostRequest("Definitions", json);
 
             Debug.WriteLine(resp);
+        }
+
+        [TestMethod]
+        public void PostPrexistingTerms()
+        {
+            GivenEmptyDataset();
+
+            var terms = GivenTerms();
+            PostNewTerms();
+
+            terms.First().TermDefinition = "=== Updated definition ===";
+
+            var json = new JavaScriptSerializer().Serialize(terms);
+            var resp = MakeHttpPostRequest("Definitions", json);
+
+            Debug.WriteLine(resp);
+
+            var defResp = new JavaScriptSerializer().Deserialize<DefinitionResponse>(resp);
+            Assert.IsTrue(defResp.RecordsUpdated == 1);
         }
 
         [TestMethod]

@@ -55,23 +55,32 @@ namespace GlossarySolution.Controllers
 
             try
             {
-                foreach (var definition in definitions)
+                foreach (var def in definitions)
                 {
                     // Validate
-                    if (definition.Term.Length >= 2 && definition.Term.Length <= 80
-                        && definition.TermDefinition.Length >= 10)
+                    if (def.Term.Length >= 2 && def.Term.Length <= 80
+                        && def.TermDefinition.Length >= 10)
                     {
-                        db.Definitions.Add(new Definition { Term = definition.Term, TermDefinition = definition.TermDefinition });
+                        var existing = (from d in db.Definitions where d.Term == def.Term select d).FirstOrDefault();
+                        if (existing == null)
+                        {
+                            db.Definitions.Add(new Definition { Term = def.Term, TermDefinition = def.TermDefinition });
+                        }
+                        else
+                        {
+                            existing.TermDefinition = def.TermDefinition;
+                        }
                     }
                     else
                     {
-                        return BadRequest($"Validation error in definition: {definition.Term}");
+                        return BadRequest($"Validation error in definition: {def.Term}");
                     }
                 }
 
+                db.ChangeTracker.DetectChanges();
                 var count = db.SaveChanges(); // commit
 
-                return Json(new { RecordCount = count });
+                return Json(new { RecordsUpdated = count });
             }
             catch (Exception ex)
             {
