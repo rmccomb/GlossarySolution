@@ -23,10 +23,10 @@ namespace GlossarySolution.Controllers
         private GlossaryEntities db = new GlossaryEntities();
 
         // GET: api/Definitions
-        //public IQueryable<Definition> GetDefinitions()
-        //{
-        //    return db.Definitions; // return XML
-        //}
+        /// <summary>
+        /// Get all the definitions as JSON
+        /// </summary>
+        /// <returns> JSON array of { Term: "A", TermDefinition: "B" } </returns>
         [HttpGet]
         public IHttpActionResult GetDefinitions()
         {
@@ -51,18 +51,22 @@ namespace GlossarySolution.Controllers
         public IHttpActionResult PostDefinitions([FromBody] object json)
         {
             Debug.WriteLine(json);
-            var definitions = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<Definition[]>(json.ToString());
+            var definitions = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<Models.DefinitionModel[]>(json.ToString());
 
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
                 foreach (var definition in definitions)
                 {
-                    db.Definitions.Add(definition);
+                    // Validate
+                    if (definition.Term.Length >= 2 && definition.Term.Length <= 80
+                        && definition.TermDefinition.Length >= 10)
+                    {
+                        db.Definitions.Add(new Definition { Term = definition.Term, TermDefinition = definition.TermDefinition });
+                    }
+                    else
+                    {
+                        return BadRequest($"Validation error in definition: {definition.Term}");
+                    }
                 }
 
                 var count = db.SaveChanges(); // commit

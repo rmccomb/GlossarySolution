@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Diagnostics;
 using System.Web.Script.Serialization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Glossary.Tests.External
 {
@@ -71,6 +72,20 @@ namespace Glossary.Tests.External
             Debug.WriteLine(resp);
         }
 
+        [TestMethod]
+        public async Task PostTermsErrorAsync()
+        {
+            // Validation of too short term
+            var terms = new Definition[] { new Definition { Term = "A", TermDefinition = "B" } };
+            var json = new JavaScriptSerializer().Serialize(terms);
+            Debug.WriteLine(json);
+
+            var resp = await MakeHttpPostRequestAsync("Definitions", json);
+
+            Debug.WriteLine(resp.StatusCode);
+            Assert.IsTrue(resp.StatusCode == System.Net.HttpStatusCode.BadRequest);
+        }
+
         static string MakeHttpPostRequest(string command, object content)
         {
             var client = GetHttpClient();
@@ -80,6 +95,15 @@ namespace Glossary.Tests.External
             var response = client.PostAsJsonAsync(subCmd, content);
             response.Result.EnsureSuccessStatusCode();
             return response.Result.Content.ReadAsStringAsync().Result;
+        }
+
+        static async Task<HttpResponseMessage> MakeHttpPostRequestAsync(string command, object content)
+        {
+            var client = GetHttpClient();
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+            var subCmd = new Uri(uri + command);
+            Debug.WriteLine(subCmd);
+            return await client.PostAsJsonAsync(subCmd, content);
         }
 
         static HttpClient GetHttpClient()
