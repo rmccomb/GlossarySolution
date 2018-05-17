@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Script.Serialization;
 using Glossary.Data;
 using Newtonsoft.Json.Linq;
 
@@ -26,10 +27,53 @@ namespace GlossarySolution.Controllers
         //{
         //    return db.Definitions; // return XML
         //}
-        public string GetDefinitions()
+        [HttpGet]
+        public IHttpActionResult GetDefinitions()
         {
-            var serializer = new JavaScriptSerializer();
-            return serializer.Serialize((from d in db.Definitions select d).ToArray());
+            try
+            {
+                return Json(db.Definitions);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST: api/Definitions
+        /// <summary>
+        /// Post a JSON array of Definitions
+        /// </summary>
+        /// <param name="json"> Array of { Term: "A", TermDefinition: "B" } </param>
+        /// <returns> Count of rows added to database as JSON </returns>
+        [HttpPost]
+        public IHttpActionResult PostDefinitions([FromBody] object json)
+        {
+            Debug.WriteLine(json);
+            var definitions = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<Definition[]>(json.ToString());
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                foreach (var definition in definitions)
+                {
+                    db.Definitions.Add(definition);
+                }
+
+                var count = db.SaveChanges(); // commit
+
+                return Json(new { RecordCount = count });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -91,35 +135,35 @@ namespace GlossarySolution.Controllers
         }
 
         // POST: api/Definitions
-        [ResponseType(typeof(Definition))]
-        public IHttpActionResult PostDefinition(Definition definition)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[ResponseType(typeof(Definition))]
+        //public IHttpActionResult PostDefinition(Definition definition)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            db.Definitions.Add(definition);
-            db.SaveChanges();
+        //    db.Definitions.Add(definition);
+        //    db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = definition.DefinitionId }, definition);
-        }
+        //    return CreatedAtRoute("DefaultApi", new { id = definition.DefinitionId }, definition);
+        //}
 
         // DELETE: api/Definitions/5
-        [ResponseType(typeof(Definition))]
-        public IHttpActionResult DeleteDefinition(int id)
-        {
-            Definition definition = db.Definitions.Find(id);
-            if (definition == null)
-            {
-                return NotFound();
-            }
+        //[ResponseType(typeof(Definition))]
+        //public IHttpActionResult DeleteDefinition(int id)
+        //{
+        //    Definition definition = db.Definitions.Find(id);
+        //    if (definition == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            db.Definitions.Remove(definition);
-            db.SaveChanges();
+        //    db.Definitions.Remove(definition);
+        //    db.SaveChanges();
 
-            return Ok(definition);
-        }
+        //    return Ok(definition);
+        //}
 
         protected override void Dispose(bool disposing)
         {
