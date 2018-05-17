@@ -1,0 +1,49 @@
+﻿@model GlossarySolution.Models.DefinitionModel
+@{
+    var message = (string)ViewData["message"];
+    var confirmation = (string)ViewData["confirmation"];
+    var action = (string)ViewData["action"];
+}
+<main role="main" class="container">
+    @using (Html.BeginForm(action, "Home", FormMethod.Post,
+        new Dictionary<string, object> { { "class", "form-horizontal input-selectors k-content" }, { "role", "form" }, { "ID", "Save" } }))
+    {
+    <div class="well">
+        <fieldset class="col-12">
+            <legend>
+                @message
+            </legend>
+            <p></p>
+            <div class="bg-white box-shadow rounded">
+                <div class="form-group">
+                    @Html.TextBoxFor(d => d.Term)
+                    @Html.ValidationMessageFor(d => d.Term)
+                </div>
+                <div>
+                    @Html.TextBoxFor(d => d.TermDefinition)
+                    @Html.ValidationMessageFor(d => d.TermDefinition)
+                </div>
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+            </div>
+        </fieldset>
+        @Html.ValidationSummary(true)
+    </div>
+    }
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</main>
+
+@*<form>
+    <div class="form-group">
+        <label for="term">Term of reference</label>
+        <input type="text" class="form-control" id="term" aria-describedby="emailHelp" placeholder="Enter a term of reference">
+    </div>
+    <div class="form-group">
+        <label for="termDefinition">Definition</label>
+        <input type="text" class="form-control" id="termDefinition" placeholder="Enter a definition">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>*@

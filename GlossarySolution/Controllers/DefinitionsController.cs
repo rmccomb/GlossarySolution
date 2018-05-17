@@ -8,18 +8,28 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Script.Serialization;
 using Glossary.Data;
+using Newtonsoft.Json.Linq;
 
 namespace GlossarySolution.Controllers
 {
+    /// <summary>
+    /// Controller for accessing definitions
+    /// </summary>
     public class DefinitionsController : ApiController
     {
         private GlossaryEntities db = new GlossaryEntities();
 
         // GET: api/Definitions
-        public IQueryable<Definition> GetDefinitions()
+        //public IQueryable<Definition> GetDefinitions()
+        //{
+        //    return db.Definitions; // return XML
+        //}
+        public string GetDefinitions()
         {
-            return db.Definitions;
+            var serializer = new JavaScriptSerializer();
+            return serializer.Serialize((from d in db.Definitions select d).ToArray());
         }
 
         /// <summary>
@@ -40,8 +50,11 @@ namespace GlossarySolution.Controllers
             return Ok(definition);
         }
 
+        /// <summary>
+        /// Put an updated Definition
+        /// </summary>
         // PUT: api/Definitions/5
-        [ResponseType(typeof(void))]
+        //[ResponseType(typeof(void))]
         public IHttpActionResult PutDefinition(int id, Definition definition)
         {
             if (!ModelState.IsValid)
@@ -52,6 +65,7 @@ namespace GlossarySolution.Controllers
             if (id != definition.DefinitionId)
             {
                 return BadRequest();
+                //return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             db.Entry(definition).State = EntityState.Modified;
@@ -73,6 +87,7 @@ namespace GlossarySolution.Controllers
             }
 
             return StatusCode(HttpStatusCode.NoContent);
+
         }
 
         // POST: api/Definitions
