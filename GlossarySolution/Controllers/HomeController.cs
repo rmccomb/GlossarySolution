@@ -43,7 +43,11 @@ namespace GlossarySolution.Controllers
         {
             try
             {
-                //var model = new IndexModel { ListPart = part };
+                if (part == null)
+                {
+                    return RedirectToAction("List");
+                }
+
                 var list = new List<DefinitionModel>();
                 string partDesc = "";
                 part.ToUpper().ToCharArray().ToList().ForEach(c =>
@@ -74,7 +78,7 @@ namespace GlossarySolution.Controllers
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return RedirectToRoute("Error");
+                return RedirectToActionPermanent("Error");
             }
         }
 
@@ -189,6 +193,11 @@ namespace GlossarySolution.Controllers
             db.Definitions.Remove(definition);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Error()
+        {
+            return View("Error");
         }
 
         /// <summary>
