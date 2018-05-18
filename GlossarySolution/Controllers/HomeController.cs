@@ -27,8 +27,16 @@ namespace GlossarySolution.Controllers
             ViewBag.Title = "Home Page";
 
             // TODO nicer index and random term of the day
+            var model = new IndexModel();
+            var defs = (from d in db.Definitions select d).ToArray();
+            if (defs.Length > 0)
+            {
+                var r = new Random().Next(defs.Length);
+                model.TermOTD = new DefinitionModel { Term = defs[r].Term, TermDefinition = defs[r].TermDefinition };
 
-            return View();
+            }
+
+            return View(model);
         }
 
         // GET: List
