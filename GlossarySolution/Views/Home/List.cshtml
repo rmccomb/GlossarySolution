@@ -10,8 +10,8 @@
 <h1 class="sub-title">Index of Terms @(part != null ? partDesc : "")</h1>
 
 @*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
 <table class="table">
     <tr>
         <th>
@@ -45,5 +45,7 @@
 
 @if (Model.Count() == 0)
 {
-    <div class="alert alert-info" role="alert">No Terms found, add some!</div>
+    <div class="alert alert-warning" role="alert">No Terms found, add some!</div>
+
+    <a href="/Home/Create" class="btn btn-default">Create</a>
 }
