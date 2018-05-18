@@ -39,6 +39,45 @@ namespace GlossarySolution.Controllers
             return View(model);
         }
 
+        public ActionResult Contents(string part)
+        {
+            try
+            {
+                //var model = new IndexModel { ListPart = part };
+                var list = new List<DefinitionModel>();
+                string partDesc = "";
+                part.ToUpper().ToCharArray().ToList().ForEach(c =>
+                {
+                    var s = c.ToString();
+                    partDesc = partDesc + s + ", ";
+
+                    var defs = (from d in db.Definitions
+                                where d.Term.StartsWith(s)
+                                select new DefinitionModel
+                                {
+                                    DefinitionId = d.DefinitionId,
+                                    Term = d.Term,
+                                    TermDefinition = d.TermDefinition
+                                }).ToList();
+
+                    list.AddRange(defs);
+                });
+
+                ViewData["ListPart"] = part;
+                if (part != null)
+                {
+                    ViewData["ListPartDesc"] = $"({part[0]} - {part.Last()})".ToUpper();
+                }
+
+                return View("List", list);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return RedirectToRoute("Error");
+            }
+        }
+
         // GET: List
         public async Task<ActionResult> List()
         {
@@ -46,7 +85,6 @@ namespace GlossarySolution.Controllers
             var model = new List<Models.DefinitionModel>(defs.Select(d => new
                 Models.DefinitionModel
             { DefinitionId = d.DefinitionId, Term = d.Term, TermDefinition = d.TermDefinition }));
-            //return View(await db.Definitions.ToListAsync());
             return View(model);
         }
 

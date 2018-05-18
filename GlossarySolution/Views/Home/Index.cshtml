@@ -1,22 +1,31 @@
 ﻿@model GlossarySolution.Models.IndexModel
-@{ 
+@{
     var term = Model.TermOTD.Term;
     var termDefinition = Model.TermOTD?.TermDefinition;
 }
 
 <main role="main" class="container">
-    <div class="row">
-        <main class="col-12">
-            <div>
-                <h1 class="title">A Glossary of Terms</h1>
-            </div>
-            <p></p>
-            <p class="leader">@term - @termDefinition</p>
+    <main class="col-12">
+        <div>
+            <h1 class="title">A Glossary of Terms</h1>
+        </div>
+        <p></p>
+        <p class="leader">@term - @termDefinition</p>
 
-            <div class="bg-white box-shadow api-list rounded">
-                <button type="button" class="btn btn-primary">New Word</button>
-                @Html.ActionLink("Definitions", "List", "Home")
-            </div>
-        </main>
-    </div>
+        <div class="bg-white box-shadow index-list rounded">
+            <a href="/Home/Create" class="btn btn-default">Create</a>
+            <hr />
+            @*@Html.ActionLink("A - C", "Contents", new { part = 1 }, new Dictionary<string, object> { { "class", "btn btn-light" } })*@
+            <a href="@Url.Action("Contents", new { part = "abc" })" class="btn btn-light">A - C</a>
+            <a href="@Url.Action("Contents", new { part = "def" })" class="btn btn-light">D - F</a>
+            <a href="@Url.Action("Contents", new { part = "ghi" })" class="btn btn-light">G - I</a>
+            <a href="@Url.Action("Contents", new { part = "jkl" })" class="btn btn-light">J - L</a>
+            <a href="@Url.Action("Contents", new { part = "mno" })" class="btn btn-light">M - O</a>
+            <a href="@Url.Action("Contents", new { part = "pqr" })" class="btn btn-light">P - R</a>
+            <a href="@Url.Action("Contents", new { part = "st" })" class="btn btn-light">S - T</a>
+            <a href="@Url.Action("Contents", new { part = "uvw" })" class="btn btn-light">U - W</a>
+            <a href="@Url.Action("Contents", new { part = "xyz" })" class="btn btn-light">X - Z</a>
+        </div>
+    </main>
+    @*@Html.ActionLink("Definitions", "List", "Home")*@
 </main>

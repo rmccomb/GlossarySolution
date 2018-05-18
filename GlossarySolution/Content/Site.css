@@ -36,6 +36,16 @@
     border-color: #655b94;
 }
 
+.index-list {
+    padding: 1.4rem;
+    margin-right: 0;
+    margin-left: 0;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #d0ebf1;
+}
+
 .btn-default {
     background-color: #d1ecf1;
+    color: #212529;
 }

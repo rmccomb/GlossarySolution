@@ -3,13 +3,15 @@
 
 @{
     ViewBag.Title = "Terms";
+    var part = (string)ViewData["ListPart"];
+    var partDesc = (string)ViewData["ListPartDesc"];
 }
 
-<h1 class="sub-title">Index of Terms</h1>
+<h1 class="sub-title">Index of Terms @(part != null ? partDesc : "")</h1>
 
 @*<p>
-        @Html.ActionLink("Create New", "Create")
-    </p>*@
+    @Html.ActionLink("Create New", "Create")
+</p>*@
 <table class="table">
     <tr>
         <th>
