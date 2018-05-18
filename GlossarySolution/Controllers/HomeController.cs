@@ -39,6 +39,10 @@ namespace GlossarySolution.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Show the part list of terms
+        /// </summary>
+        /// <param name="part">Alphabetical part</param>
         public ActionResult Contents(string part)
         {
             try
@@ -83,35 +87,69 @@ namespace GlossarySolution.Controllers
         }
 
         // GET: List
+        /// <summary>
+        /// Main list of terms
+        /// </summary>
         public async Task<ActionResult> List()
         {
-            var defs = await db.Definitions.ToListAsync();
-            var model = new List<Models.DefinitionModel>(defs.Select(d => new
-                Models.DefinitionModel
-            { DefinitionId = d.DefinitionId, Term = d.Term, TermDefinition = d.TermDefinition }));
-            return View(model);
+            try
+            {
+                var defs = await db.Definitions.ToListAsync();
+                var model = new List<Models.DefinitionModel>(defs.Select(d => new
+                    Models.DefinitionModel
+                { DefinitionId = d.DefinitionId, Term = d.Term, TermDefinition = d.TermDefinition }));
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return RedirectToActionPermanent("Error");
+            }
         }
 
         // GET: Home/Details/5
+        /// <summary>
+        /// Item details view
+        /// </summary>
         public async Task<ActionResult> Details(int? id)
         {
-            if (id == null)
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Definition definition = await db.Definitions.FindAsync(id);
+                if (definition == null)
+                {
+                    return HttpNotFound();
+                }
+                var model = new Models.DefinitionModel { DefinitionId = definition.DefinitionId, Term = definition.Term, TermDefinition = definition.TermDefinition };
+                return View(model);
             }
-            Definition definition = await db.Definitions.FindAsync(id);
-            if (definition == null)
+            catch (Exception ex)
             {
-                return HttpNotFound();
+                Debug.WriteLine(ex.Message);
+                return RedirectToActionPermanent("Error");
             }
-            var model = new Models.DefinitionModel { DefinitionId = definition.DefinitionId, Term = definition.Term, TermDefinition = definition.TermDefinition };
-            return View(model);
         }
 
         // GET: Home/Create
+        /// <summary>
+        /// Create a new Term
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return RedirectToActionPermanent("Error");
+            }
         }
 
         // POST: Home/Create
@@ -122,66 +160,107 @@ namespace GlossarySolution.Controllers
         //public async Task<ActionResult> Create([Bind(Include = "DefinitionId,Term,TermDefinition")] Definition definition)
         public async Task<ActionResult> Create([Bind(Include = "DefinitionId,Term,TermDefinition")] Models.DefinitionModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var definition = new Definition { Term = model.Term, TermDefinition = model.TermDefinition };
-                db.Definitions.Add(definition);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+                if (ModelState.IsValid)
+                {
+                    var definition = new Definition { Term = model.Term, TermDefinition = model.TermDefinition };
+                    db.Definitions.Add(definition);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return RedirectToActionPermanent("Error");
+            }
         }
 
         // GET: Home/Edit/5
+        /// <summary>
+        /// Edit a given Term by ID
+        /// </summary>
         public async Task<ActionResult> Edit(int? id)
         {
-            if (id == null)
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Definition definition = await db.Definitions.FindAsync(id);
+                if (definition == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(new Models.DefinitionModel
+                {
+                    DefinitionId = definition.DefinitionId,
+                    Term = definition.Term,
+                    TermDefinition = definition.TermDefinition
+                });
             }
-            Definition definition = await db.Definitions.FindAsync(id);
-            if (definition == null)
+            catch (Exception ex)
             {
-                return HttpNotFound();
+                Debug.WriteLine(ex.Message);
+                return RedirectToActionPermanent("Error");
             }
-            return View(new Models.DefinitionModel
-            {
-                DefinitionId = definition.DefinitionId,
-                Term = definition.Term,
-                TermDefinition = definition.TermDefinition
-            });
         }
 
         // POST: Home/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Edit a given bound Term 
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "DefinitionId,Term,TermDefinition")] Definition definition)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(definition).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(definition).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                return View(definition);
             }
-            return View(definition);
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return RedirectToActionPermanent("Error");
+            }
         }
 
         // GET: Home/Delete/5
+        /// <summary>
+        /// Delete a Term by ID
+        /// </summary>
         public async Task<ActionResult> Delete(int? id)
         {
-            if (id == null)
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Definition definition = await db.Definitions.FindAsync(id);
+                if (definition == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(new Models.DefinitionModel { DefinitionId = definition.DefinitionId, Term = definition.Term, TermDefinition = definition.TermDefinition });
             }
-            Definition definition = await db.Definitions.FindAsync(id);
-            if (definition == null)
+            catch (Exception ex)
             {
-                return HttpNotFound();
+                Debug.WriteLine(ex.Message);
+                return RedirectToActionPermanent("Error");
             }
-            return View(new Models.DefinitionModel { DefinitionId = definition.DefinitionId, Term = definition.Term, TermDefinition = definition.TermDefinition });
         }
 
         // POST: Home/Delete/5
@@ -189,15 +268,31 @@ namespace GlossarySolution.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Definition definition = await db.Definitions.FindAsync(id);
-            db.Definitions.Remove(definition);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            try
+            {
+                Definition definition = await db.Definitions.FindAsync(id);
+                db.Definitions.Remove(definition);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return RedirectToActionPermanent("Error");
+            }
         }
 
         public ActionResult Error()
         {
-            return View("Error");
+            try
+            {
+                return View("Error");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                throw;
+            }
         }
 
         /// <summary>

@@ -521,6 +521,43 @@
             Home page
             </summary>
         </member>
+        <member name="M:GlossarySolution.Controllers.HomeController.Contents(System.String)">
+            <summary>
+            Show the part list of terms
+            </summary>
+            <param name="part">Alphabetical part</param>
+        </member>
+        <member name="M:GlossarySolution.Controllers.HomeController.List">
+            <summary>
+            Main list of terms
+            </summary>
+        </member>
+        <member name="M:GlossarySolution.Controllers.HomeController.Details(System.Nullable{System.Int32})">
+            <summary>
+            Item details view
+            </summary>
+        </member>
+        <member name="M:GlossarySolution.Controllers.HomeController.Create">
+            <summary>
+            Create a new Term
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GlossarySolution.Controllers.HomeController.Edit(System.Nullable{System.Int32})">
+            <summary>
+            Edit a given Term by ID
+            </summary>
+        </member>
+        <member name="M:GlossarySolution.Controllers.HomeController.Edit(Glossary.Data.Definition)">
+            <summary>
+            Edit a given bound Term 
+            </summary>
+        </member>
+        <member name="M:GlossarySolution.Controllers.HomeController.Delete(System.Nullable{System.Int32})">
+            <summary>
+            Delete a Term by ID
+            </summary>
+        </member>
         <member name="M:GlossarySolution.Controllers.HomeController.ApiHelp">
             <summary>
             Display the API help
