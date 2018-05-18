@@ -35,3 +35,7 @@
     border-width: 2px;
     border-color: #655b94;
 }
+
+.btn-default {
+    background-color: #d1ecf1;
+}

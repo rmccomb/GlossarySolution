@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Glossary.Data;
+using System.Diagnostics;
 
 namespace GlossarySolution.Controllers
 {
@@ -79,8 +80,12 @@ namespace GlossarySolution.Controllers
             {
                 return HttpNotFound();
             }
-            var model = new Models.DefinitionModel { DefinitionId = definition.DefinitionId, Term = definition.Term, TermDefinition = definition.TermDefinition };
-            return View(model);
+            return View(new Models.DefinitionModel
+            {
+                DefinitionId = definition.DefinitionId,
+                Term = definition.Term,
+                TermDefinition = definition.TermDefinition
+            });
         }
 
         // POST: Definitions1/Edit/5
@@ -111,7 +116,7 @@ namespace GlossarySolution.Controllers
             {
                 return HttpNotFound();
             }
-            return View(definition);
+            return View(new Models.DefinitionModel { DefinitionId = definition.DefinitionId, Term = definition.Term, TermDefinition = definition.TermDefinition });
         }
 
         // POST: Definitions1/Delete/5
