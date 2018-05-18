@@ -1,49 +1,46 @@
-﻿@model GlossarySolution.Models.DefinitionModel
-@{
-    var message = (string)ViewData["message"];
-    var confirmation = (string)ViewData["confirmation"];
-    var action = (string)ViewData["action"];
-}
-<main role="main" class="container">
-    @using (Html.BeginForm(action, "Home", FormMethod.Post,
-        new Dictionary<string, object> { { "class", "form-horizontal input-selectors k-content" }, { "role", "form" }, { "ID", "Save" } }))
-    {
-    <div class="well">
-        <fieldset class="col-12">
-            <legend>
-                @message
-            </legend>
-            <p></p>
-            <div class="bg-white box-shadow rounded">
-                <div class="form-group">
-                    @Html.TextBoxFor(d => d.Term)
-                    @Html.ValidationMessageFor(d => d.Term)
-                </div>
-                <div>
-                    @Html.TextBoxFor(d => d.TermDefinition)
-                    @Html.ValidationMessageFor(d => d.TermDefinition)
-                </div>
-            </div>
-            <div>
-                <input type="submit" value="Submit" />
-            </div>
-        </fieldset>
-        @Html.ValidationSummary(true)
-    </div>
-    }
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
-</main>
+﻿@*@model Glossary.Data.Definition*@
+@model GlossarySolution.Models.DefinitionModel
 
-@*<form>
-    <div class="form-group">
-        <label for="term">Term of reference</label>
-        <input type="text" class="form-control" id="term" aria-describedby="emailHelp" placeholder="Enter a term of reference">
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h1 class="sub-title">Edit a Definition</h1>
+@*<h2>Edit</h2>*@
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.DefinitionId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Term, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Term, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Term, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TermDefinition, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TermDefinition, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TermDefinition, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="termDefinition">Definition</label>
-        <input type="text" class="form-control" id="termDefinition" placeholder="Enter a definition">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>*@
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -511,26 +511,20 @@
             Put an updated Definition
             </summary>
         </member>
+        <member name="T:GlossarySolution.Controllers.HomeController">
+            <summary>
+            The main controller
+            </summary>
+        </member>
         <member name="M:GlossarySolution.Controllers.HomeController.Index">
             <summary>
             Home page
             </summary>
         </member>
-        <member name="M:GlossarySolution.Controllers.HomeController.AllWords">
+        <member name="M:GlossarySolution.Controllers.HomeController.ApiHelp">
             <summary>
-            Get all the words in a view
+            Display the API help
             </summary>
-        </member>
-        <member name="M:GlossarySolution.Controllers.HomeController.Edit">
-            <summary>
-            Page for entering new definition
-            </summary>
-        </member>
-        <member name="M:GlossarySolution.Controllers.ValuesController.Delete(System.Int32)">
-            <summary>
-            Delete an item
-            </summary>
-            <param name="id"></param>
         </member>
     </members>
 </doc>

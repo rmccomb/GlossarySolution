@@ -137,7 +137,6 @@ namespace Glossary.Tests.External
         static HttpClient GetHttpClient()
         {
             var client = new HttpClient { BaseAddress = uri };
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("authorization", "Bearer " + Token);
             client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
             return client;
         }

@@ -2,13 +2,19 @@
 using GlossarySolution.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace GlossarySolution.Controllers
 {
+    /// <summary>
+    /// The main controller
+    /// </summary>
     public class HomeController : Controller
     {
         private GlossaryEntities db = new GlossaryEntities();
@@ -20,49 +26,131 @@ namespace GlossarySolution.Controllers
         {
             ViewBag.Title = "Home Page";
 
+            // TODO nicer index and random term of the day
+
             return View();
         }
 
-        /// <summary>
-        /// Get all the words in a view
-        /// </summary>
-        public ActionResult AllWords()
+        // GET: List
+        public async Task<ActionResult> List()
         {
-            var model = (from d in db.Definitions select d).ToList();
-            Debug.WriteLine($"wordcount: {model.Count}");
+            var defs = await db.Definitions.ToListAsync();
+            var model = new List<Models.DefinitionModel>(defs.Select(d => new
+                Models.DefinitionModel
+            { DefinitionId = d.DefinitionId, Term = d.Term, TermDefinition = d.TermDefinition }));
+            //return View(await db.Definitions.ToListAsync());
             return View(model);
         }
 
-        /// <summary>
-        /// Page for entering new definition
-        /// </summary>
-        [HttpGet]
-        public ActionResult Edit()
+        // GET: Home/Details/5
+        public async Task<ActionResult> Details(int? id)
         {
-            ViewData["message"] = "Enter a new term";
-            ViewData["action"] = "Create";
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Edit(string term, string def)
-        {
-            ViewData["message"] = "Enter a new term";
-
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Definition definition = await db.Definitions.FindAsync(id);
+            if (definition == null)
+            {
+                return HttpNotFound();
+            }
+            var model = new Models.DefinitionModel { DefinitionId = definition.DefinitionId, Term = definition.Term, TermDefinition = definition.TermDefinition };
+            return View(model);
         }
 
+        // GET: Home/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Home/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Create(DefinitionModel model)
+        [ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Create([Bind(Include = "DefinitionId,Term,TermDefinition")] Definition definition)
+        public async Task<ActionResult> Create([Bind(Include = "DefinitionId,Term,TermDefinition")] Models.DefinitionModel model)
         {
             if (ModelState.IsValid)
             {
-                db.Definitions.Add(new Definition { Term = model.Term, TermDefinition = model.TermDefinition });
-                db.SaveChanges();
+                var definition = new Definition { Term = model.Term, TermDefinition = model.TermDefinition };
+                db.Definitions.Add(definition);
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            //var definition = new DefinitionModel { Term = term, TermDefinition = termDefinition };
-            return View("Edit", model);
+            return View(model);
+        }
+
+        // GET: Home/Edit/5
+        public async Task<ActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Definition definition = await db.Definitions.FindAsync(id);
+            if (definition == null)
+            {
+                return HttpNotFound();
+            }
+            return View(new Models.DefinitionModel
+            {
+                DefinitionId = definition.DefinitionId,
+                Term = definition.Term,
+                TermDefinition = definition.TermDefinition
+            });
+        }
+
+        // POST: Home/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind(Include = "DefinitionId,Term,TermDefinition")] Definition definition)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(definition).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(definition);
+        }
+
+        // GET: Home/Delete/5
+        public async Task<ActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Definition definition = await db.Definitions.FindAsync(id);
+            if (definition == null)
+            {
+                return HttpNotFound();
+            }
+            return View(new Models.DefinitionModel { DefinitionId = definition.DefinitionId, Term = definition.Term, TermDefinition = definition.TermDefinition });
+        }
+
+        // POST: Home/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(int id)
+        {
+            Definition definition = await db.Definitions.FindAsync(id);
+            db.Definitions.Remove(definition);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Display the API help
+        /// </summary>
+        public ActionResult ApiHelp()
+        {
+            return View();
         }
 
     }

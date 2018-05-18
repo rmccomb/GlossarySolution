@@ -1,0 +1,35 @@
+﻿<main role="main">
+    <div class="row">
+        <main class="col-12">
+            <div>
+                <h1 class="title">Glossary API</h1>
+            </div>
+            <p></p>
+            <p class="leader">Available HTTP methods</p>
+
+            <div class="bg-white box-shadow api-list rounded">
+                <h6 class="border-bottom brder-gray pb-2">Terms</h6>
+                <dl>
+                    <dt>Get all term definitions</dt>
+                    <dd>HTTP endpoint GET: http://../api/Definitions</dd>
+                    <dd>Content-Type: application/json</dd>
+                    <dd>Returns JSON array of definitions</dd>
+                </dl>
+                <dl>
+                    <dt>Insert or update term definitions</dt>
+                    <dd>HTTP endpoint POST: http://../api/Definitions</dd>
+                    <dd>Content-Type: application/json</dd>
+                    <dd>Request body: JSON Array of definitions e.g.</dd>
+                </dl>
+                <code class="lang" data-lang="javascript">
+                    [{
+                    "Term":"abyssal plain",
+                    "TermDefinition":"The ocean floor off the continental margin, usually very flat with a slight slope."
+                    },
+                    ...
+                    ]
+                </code>
+            </div>
+        </main>
+    </div>
+</main>
