@@ -18,7 +18,12 @@ namespace GlossarySolution.Controllers
         // GET: Definitions1
         public async Task<ActionResult> Index()
         {
-            return View(await db.Definitions.ToListAsync());
+            var defs = await db.Definitions.ToListAsync();
+            var model = new List<Models.DefinitionModel>(defs.Select(d => new
+                Models.DefinitionModel
+            { DefinitionId = d.DefinitionId, Term = d.Term, TermDefinition = d.TermDefinition }));
+            //return View(await db.Definitions.ToListAsync());
+            return View(model);
         }
 
         // GET: Definitions1/Details/5

@@ -10,19 +10,22 @@ using System.Threading.Tasks;
 
 namespace Glossary.Tests.External
 {
-    /// <summary>
-    /// Client-side type
-    /// </summary>
+    #region Client-side JSON types
+
     public class Definition
     {
         public string Term;
         public string TermDefinition;
     }
 
+
     public class DefinitionResponse
     {
         public int RecordsUpdated;
+        public int RecordsTotal;
     }
+
+    #endregion
 
     /// <summary>
     /// External API tests
@@ -94,6 +97,7 @@ namespace Glossary.Tests.External
 
             var defResp = new JavaScriptSerializer().Deserialize<DefinitionResponse>(resp);
             Assert.IsTrue(defResp.RecordsUpdated == 1);
+            Assert.IsTrue(defResp.RecordsTotal == 3);
         }
 
         [TestMethod]

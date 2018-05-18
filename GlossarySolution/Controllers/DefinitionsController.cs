@@ -45,8 +45,8 @@ namespace GlossarySolution.Controllers
         /// <summary>
         /// Post a JSON array of Definitions
         /// </summary>
-        /// <param name="json"> Array of { Term: "A", TermDefinition: "B" } </param>
-        /// <returns> Count of rows added to database as JSON </returns>
+        /// <param name="json"> JSON array of { Term: "A", TermDefinition: "B" } </param>
+        /// <returns> Count of rows added to database, and total records read as JSON e.g. { RecordsUpdated: 1, RecordsTotal: 3 }</returns>
         [HttpPost]
         public IHttpActionResult PostDefinitions([FromBody] object json)
         {
@@ -55,6 +55,7 @@ namespace GlossarySolution.Controllers
 
             try
             {
+                var records = 0;
                 foreach (var def in definitions)
                 {
                     // Validate
@@ -75,12 +76,14 @@ namespace GlossarySolution.Controllers
                     {
                         return BadRequest($"Validation error in definition: {def.Term}");
                     }
+
+                    records++;
                 }
 
                 db.ChangeTracker.DetectChanges();
                 var count = db.SaveChanges(); // commit
 
-                return Json(new { RecordsUpdated = count });
+                return Json(new { RecordsUpdated = count, RecordsTotal = records });
             }
             catch (Exception ex)
             {

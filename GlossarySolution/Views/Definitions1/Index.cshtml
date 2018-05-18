@@ -1,14 +1,15 @@
-﻿@model IEnumerable<Glossary.Data.Definition>
+﻿@*@model IEnumerable<Glossary.Data.Definition>*@
+@model IEnumerable <GlossarySolution.Models.DefinitionModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Terms";
 }
 
-<h2>Index</h2>
+<h1 class="sub-title">Index of Terms</h1>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
 <table class="table">
     <tr>
         <th>

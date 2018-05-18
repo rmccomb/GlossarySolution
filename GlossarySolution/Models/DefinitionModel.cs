@@ -11,6 +11,7 @@ namespace GlossarySolution.Models
         public string Term { get; set; }
         [Required]
         [StringLength(255, MinimumLength=10)]
+        [Display(Name="Term Definition")]
         public string TermDefinition { get; set; }
     }
 }

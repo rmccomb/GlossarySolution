@@ -496,8 +496,8 @@
             <summary>
             Post a JSON array of Definitions
             </summary>
-            <param name="json"> Array of { Term: "A", TermDefinition: "B" } </param>
-            <returns> Count of rows added to database as JSON </returns>
+            <param name="json"> JSON array of { Term: "A", TermDefinition: "B" } </param>
+            <returns> Count of rows added to database, and total records read as JSON e.g. { RecordsUpdated: 1, RecordsTotal: 3 }</returns>
         </member>
         <member name="M:GlossarySolution.Controllers.DefinitionsController.GetDefinition(System.String)">
             <summary>
