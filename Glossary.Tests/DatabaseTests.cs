@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Glossary.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,6 +10,16 @@ namespace Glossary.Tests
     [TestClass]
     public class DatabaseTests
     {
+        [ClassInitialize()]
+        public static void SetDataDirectory(TestContext testContext)
+        {
+            // Set the database path to the development data folder
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            int index = baseDir.IndexOf("Glossary.Tests");
+            var dataDir = Path.Combine(baseDir.Substring(0, index), "Glossary.Data");
+            AppDomain.CurrentDomain.SetData("DataDirectory", dataDir);
+        }
+
         [TestMethod]
         public void ListDefinitions()
         {

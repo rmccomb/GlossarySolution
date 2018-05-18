@@ -19,7 +19,9 @@ namespace GlossarySolution
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+#if DEBUG
             ReadInitialDefs();
+#endif
         }
 
         private void ReadInitialDefs()
@@ -43,7 +45,7 @@ namespace GlossarySolution
             }
         }
 
-        public DefinitionModel[] GivenTerms()
+        private DefinitionModel[] GivenTerms()
         {
             return new DefinitionModel[]
             {
