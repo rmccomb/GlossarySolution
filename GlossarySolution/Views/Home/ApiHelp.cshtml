@@ -16,7 +16,7 @@
                     <dd>Returns JSON array of definitions</dd>
                 </dl>
                 <dl>
-                    <dt>Insert or update term definitions</dt>
+                    <dt>Bulk import - insert or update one or more glossary of terms</dt>
                     <dd>HTTP endpoint POST: http://../api/Definitions</dd>
                     <dd>Content-Type: application/json</dd>
                     <dd>Request body: JSON array of definitions e.g.</dd>
@@ -28,6 +28,14 @@
                     },
                     ...
                     ]
+                </code>
+                <p></p>
+                <div>The response returns a JSON structure showing records affected e.g.</div>
+                <code class="lang" data-lang="javascript">
+                    {
+                    "RecordsTotal":3,
+                    "RecordsUpdated":1
+                    }
                 </code>
             </div>
         </main>
