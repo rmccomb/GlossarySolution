@@ -9,26 +9,41 @@
 
 <div>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Term)
-        </dt>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-10 control-label">
+                @Html.DisplayNameFor(model => model.Term)
+            </label>
 
-        <dd>
-            @Html.DisplayFor(model => model.Term)
-        </dd>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Term)
+            </div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TermDefinition)
-        </dt>
+        <div class="form-group">
+            <label class="col-md-10 control-label">
+                @Html.DisplayNameFor(model => model.TermDefinition)
+            </label>
 
-        <dd>
-            @Html.DisplayFor(model => model.TermDefinition)
-        </dd>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.TermDefinition)
+            </div>
+        </div>
 
-    </dl>
+        <div class="form-row form-row-buttons">
+            <div class="col-md-2">
+                <a href="@Url.Action("Edit", "Home", new { id = Model.DefinitionId })" class="btn btn-default btn-block btn-sm">Edit</a>
+            </div>
+            <div class="col-md-2">
+                <a href="@Url.Action("Delete", "Home", new { id = Model.DefinitionId })" class="btn btn-light btn-block btn-sm">Delete</a>
+            </div>
+            <div class="col-md-2">
+                <a href="@Url.Action("List", "Home")", class="btn btn-light btn-block btn-sm">Index</a>
+            </div>
+        </div>
+    </div>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.DefinitionId }) |
-    @Html.ActionLink("Back to List", "Index")
+    
+    @*@Html.ActionLink("Back to List", "Index")*@
 </p>

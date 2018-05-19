@@ -24,19 +24,29 @@ namespace GlossarySolution.Controllers
         /// </summary>
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
-
-            // TODO nicer index and random term of the day
-            var model = new IndexModel();
-            var defs = (from d in db.Definitions select d).ToArray();
-            if (defs.Length > 0)
+            try
             {
-                var r = new Random().Next(defs.Length);
-                model.TermOTD = new DefinitionModel { Term = defs[r].Term, TermDefinition = defs[r].TermDefinition };
+                // Random 'term of the day'
+                DefinitionModel model = null;
+                var defs = (from d in db.Definitions select d).ToArray();
+                if (defs.Length > 0)
+                {
+                    var r = new Random().Next(defs.Length);
+                    model = new DefinitionModel { Term = defs[r].Term, TermDefinition = defs[r].TermDefinition };
+                }
 
+                return View(model);
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return RedirectToActionPermanent("Index", "Error");
+            }
+        }
 
-            return View(model);
+        public ActionResult Contents2()
+        {
+            return View("Contents");
         }
 
         /// <summary>
@@ -53,11 +63,18 @@ namespace GlossarySolution.Controllers
                 }
 
                 var list = new List<DefinitionModel>();
-                string partDesc = "";
+                var chars = part.Distinct();
+
+                //var len = chars.Count();
+                //if (len > 64)
+                //    return RedirectToAction("List");
+
+                int counter = 0;
                 part.ToUpper().ToCharArray().ToList().ForEach(c =>
                 {
+                    if (counter > 64) return;
                     var s = c.ToString();
-                    partDesc = partDesc + s + ", ";
+                    //if (!"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".Contains(c)) return;
 
                     var defs = (from d in db.Definitions
                                 where d.Term.StartsWith(s)
@@ -69,6 +86,7 @@ namespace GlossarySolution.Controllers
                                 }).ToList();
 
                     list.AddRange(defs);
+                    counter++;
                 });
 
                 ViewData["ListPart"] = part;
@@ -82,7 +100,7 @@ namespace GlossarySolution.Controllers
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return RedirectToActionPermanent("Error");
+                return RedirectToActionPermanent("Index", "Error");
             }
         }
 
@@ -103,7 +121,7 @@ namespace GlossarySolution.Controllers
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return RedirectToActionPermanent("Error");
+                return RedirectToActionPermanent("Index", "Error");
             }
         }
 
@@ -130,7 +148,7 @@ namespace GlossarySolution.Controllers
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return RedirectToActionPermanent("Error");
+                return RedirectToActionPermanent("Index", "Error");
             }
         }
 
@@ -148,7 +166,7 @@ namespace GlossarySolution.Controllers
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return RedirectToActionPermanent("Error");
+                return RedirectToActionPermanent("Index", "Error");
             }
         }
 
@@ -157,6 +175,7 @@ namespace GlossarySolution.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         //public async Task<ActionResult> Create([Bind(Include = "DefinitionId,Term,TermDefinition")] Definition definition)
         public async Task<ActionResult> Create([Bind(Include = "DefinitionId,Term,TermDefinition")] Models.DefinitionModel model)
         {
@@ -167,7 +186,7 @@ namespace GlossarySolution.Controllers
                     var definition = new Definition { Term = model.Term, TermDefinition = model.TermDefinition };
                     db.Definitions.Add(definition);
                     await db.SaveChangesAsync();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("List");
                 }
 
                 return View(model);
@@ -175,7 +194,7 @@ namespace GlossarySolution.Controllers
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return RedirectToActionPermanent("Error");
+                return RedirectToActionPermanent("Index", "Error");
             }
         }
 
@@ -206,7 +225,7 @@ namespace GlossarySolution.Controllers
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return RedirectToActionPermanent("Error");
+                return RedirectToActionPermanent("Index", "Error");
             }
         }
 
@@ -218,6 +237,7 @@ namespace GlossarySolution.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public async Task<ActionResult> Edit([Bind(Include = "DefinitionId,Term,TermDefinition")] Definition definition)
         {
             try
@@ -226,14 +246,15 @@ namespace GlossarySolution.Controllers
                 {
                     db.Entry(definition).State = EntityState.Modified;
                     await db.SaveChangesAsync();
-                    return RedirectToAction("Index");
+                    //return RedirectToAction("Details", definition.DefinitionId);
+                    return RedirectToAction("List");
                 }
                 return View(definition);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return RedirectToActionPermanent("Error");
+                return RedirectToActionPermanent("Index", "Error");
             }
         }
 
@@ -259,7 +280,7 @@ namespace GlossarySolution.Controllers
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return RedirectToActionPermanent("Error");
+                return RedirectToActionPermanent("Index", "Error");
             }
         }
 
@@ -273,7 +294,7 @@ namespace GlossarySolution.Controllers
                 Definition definition = await db.Definitions.FindAsync(id);
                 db.Definitions.Remove(definition);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
             catch (Exception ex)
             {
@@ -293,6 +314,16 @@ namespace GlossarySolution.Controllers
                 Debug.WriteLine(ex.Message);
                 throw;
             }
+        }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            filterContext.ExceptionHandled = true;
+
+            Debug.WriteLine(filterContext.Exception.GetType());
+            Debug.WriteLine(filterContext.Exception.Message);
+
+            filterContext.Result = RedirectToAction("Index", "Error");
         }
 
         /// <summary>

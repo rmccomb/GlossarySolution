@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Linq;
+using System.Diagnostics;
 
 namespace GlossarySolution
 {
@@ -53,6 +54,12 @@ namespace GlossarySolution
                 new DefinitionModel { Term="accrete", TermDefinition="To add terranes (small land masses or pieces of crust) to another, usually larger, land mass." },
                 new DefinitionModel { Term="alkaline", TermDefinition = "Term pertaining to highly basic, as opposed to acidic, substance" }
             };
+        }
+
+        protected void Application_Error()
+        {
+            var err = Server.GetLastError();
+            Debug.WriteLine(err);
         }
     }
 }

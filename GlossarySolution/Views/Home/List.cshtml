@@ -11,34 +11,38 @@
 @*<p>
         @Html.ActionLink("Create New", "Create")
     </p>*@
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Term)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TermDefinition)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<table class="table table-sm">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Term)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TermDefinition)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.DefinitionId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.DefinitionId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.DefinitionId })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Term)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TermDefinition)
+            </th>
+            @*<th></th>*@
+            <th></th>
         </tr>
-    }
-
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Term)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TermDefinition)
+                </td>
+                <td>
+                    <a href="@Url.Action("Details", "Home", new { id = item.DefinitionId })" class="btn btn-light btn-block btn-sm">Details</a>
+                </td>
+                @*<td>
+                    <a href="@Url.Action("Edit", "Home", new { id = item.DefinitionId })" class="btn btn-light btn-block btn-sm">Edit</a>
+                </td>*@
+            </tr>
+        }
+    </tbody>
 </table>
 
 

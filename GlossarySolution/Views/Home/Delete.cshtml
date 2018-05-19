@@ -6,34 +6,53 @@
 
 <h1 class="sub-title">Delete a Term</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<div class="alert alert-warning">Are you sure you want to delete this?</div>
 <div>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Term)
-        </dt>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(model => model.Term)
+            </label>
 
-        <dd>
-            @Html.DisplayFor(model => model.Term)
-        </dd>
+            <div>
+                @Html.DisplayFor(model => model.Term)
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(model => model.TermDefinition)
+            </label>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TermDefinition)
-        </dt>
+            <div>
+                @Html.DisplayFor(model => model.TermDefinition)
+            </div>
+        </div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.TermDefinition)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-warning" /> |
-            @Html.ActionLink("Back to List", "Index")
+        @*<div class="form-row form-row-buttons">
+            <div class="col-md-8">
+                <a href="@Url.Action("Edit", "Home", new { id = Model.DefinitionId })" class="btn btn-default">Edit</a>
+            </div>
+            <div class="col-md-3" style="right: 0px;">
+                <a href="@Url.Action("List", "Home", new { id = Model.DefinitionId })" class="btn btn-light">Index</a>
+            </div>
+        </div>*@
+
+    <div class="form-actions no-color form-row">
+        <div class="col-md-2">
+            <input type="submit" value="Delete" class="btn btn-outline-danger btn-block btn-sm" style="font-weight: 500" />
         </div>
+        <div class="col-md-2">
+            <a href="@Url.Action("Edit", "Home", new { id = Model.DefinitionId })" class="btn btn-light btn-block btn-sm">Edit</a>
+        </div>
+        <div class="col-md-2">
+            <a href="@Url.Action("List", "Home")" class="btn btn-light btn-block btn-sm">Index</a>
+        </div>
+    </div>
     }
 </div>

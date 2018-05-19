@@ -1,30 +1,34 @@
-﻿@model GlossarySolution.Models.IndexModel
+﻿@model GlossarySolution.Models.DefinitionModel
 @{
-    var term = Model.TermOTD.Term;
-    var termDefinition = Model.TermOTD?.TermDefinition;
+    var term = Model?.Term;
+    var termDefinition = Model?.TermDefinition;
 }
 
 <main role="main" class="container">
-    <main class="col-12">
+    <main class="col-10">
         <div>
             <h1 class="title">A Glossary of Terms</h1>
         </div>
         <p></p>
-        <p class="leader">@term - @termDefinition</p>
-
+        <p class="leader"><b>@term</b>&nbsp;&nbsp; @termDefinition</p>
         <div class="bg-white box-shadow index-list rounded">
-            <a href="/Home/Create" class="btn btn-default">Create</a>
+            <div class="form-row-buttons">
+                <a href="/Home/Create" class="btn btn-default">Create</a>
+            </div>
             <hr />
-            @*@Html.ActionLink("A - C", "Contents", new { part = 1 }, new Dictionary<string, object> { { "class", "btn btn-light" } })*@
-            <a href="@Url.Action("Contents", new { part = "abc" })" class="btn btn-light">A - C</a>
-            <a href="@Url.Action("Contents", new { part = "def" })" class="btn btn-light">D - F</a>
-            <a href="@Url.Action("Contents", new { part = "ghi" })" class="btn btn-light">G - I</a>
-            <a href="@Url.Action("Contents", new { part = "jkl" })" class="btn btn-light">J - L</a>
-            <a href="@Url.Action("Contents", new { part = "mno" })" class="btn btn-light">M - O</a>
-            <a href="@Url.Action("Contents", new { part = "pqr" })" class="btn btn-light">P - R</a>
-            <a href="@Url.Action("Contents", new { part = "st" })" class="btn btn-light">S - T</a>
-            <a href="@Url.Action("Contents", new { part = "uvw" })" class="btn btn-light">U - W</a>
-            <a href="@Url.Action("Contents", new { part = "xyz" })" class="btn btn-light">X - Z</a>
+            <div class="form-row-buttons">
+                @*@Html.ActionLink("A - C", "Contents", new { part = 1 }, new Dictionary<string, object> { { "class", "btn btn-light" } })*@
+                <a href="@Url.Action("Contents2", new { part = "abc" })" class="btn btn-light btn-sm">A - C</a>
+                <a href="@Url.Action("Contents2", new { part = "def" })" class="btn btn-light btn-sm">D - F</a>
+                <a href="@Url.Action("Contents2", new { part = "ghi" })" class="btn btn-light btn-sm">G - I</a>
+                <a href="@Url.Action("Contents", new { part = "jkl" })" class="btn btn-light btn-sm">J - L</a>
+                <a href="@Url.Action("Contents", new { part = "mno" })" class="btn btn-light btn-sm">M - O</a>
+                <a href="@Url.Action("Contents", new { part = "pqr" })" class="btn btn-light btn-sm">P - R</a>
+                <a href="@Url.Action("Contents", new { part = "st" })" class="btn btn-light btn-sm">S - T</a>
+                <a href="@Url.Action("Contents", new { part = "uvw" })" class="btn btn-light btn-sm">U - W</a>
+                <a href="@Url.Action("Contents", new { part = "xyz" })" class="btn btn-light btn-sm">X - Z</a>
+                <a href="@Url.Action("Contents", new { part = "0123456789" })" class="btn btn-light btn-sm">0 - 9</a>
+            </div>
         </div>
     </main>
     @*@Html.ActionLink("Definitions", "List", "Home")*@
