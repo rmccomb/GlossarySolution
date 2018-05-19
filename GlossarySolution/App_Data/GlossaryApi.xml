@@ -527,7 +527,7 @@
             </summary>
             <param name="part">Alphabetical part</param>
         </member>
-        <member name="M:GlossarySolution.Controllers.HomeController.List">
+        <member name="M:GlossarySolution.Controllers.HomeController.List(System.String)">
             <summary>
             Main list of terms
             </summary>

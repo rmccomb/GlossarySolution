@@ -6,6 +6,8 @@
     var partDesc = (string)ViewData["ListPartDesc"];
 }
 
+<div data-part="@part"></div>
+
 <h1 class="sub-title">Index of Terms @(part != null ? partDesc : "")</h1>
 
 @*<p>
@@ -38,8 +40,8 @@
                     <a href="@Url.Action("Details", "Home", new { id = item.DefinitionId })" class="btn btn-light btn-block btn-sm">Details</a>
                 </td>
                 @*<td>
-                    <a href="@Url.Action("Edit", "Home", new { id = item.DefinitionId })" class="btn btn-light btn-block btn-sm">Edit</a>
-                </td>*@
+                        <a href="@Url.Action("Edit", "Home", new { id = item.DefinitionId })" class="btn btn-light btn-block btn-sm">Edit</a>
+                    </td>*@
             </tr>
         }
     </tbody>

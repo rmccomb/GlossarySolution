@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -44,10 +45,10 @@ namespace GlossarySolution.Controllers
             }
         }
 
-        public ActionResult Contents2()
-        {
-            return View("Contents");
-        }
+        //public ActionResult Contents2()
+        //{
+        //    return View("Contents");
+        //}
 
         /// <summary>
         /// Show the part list of terms
@@ -57,24 +58,27 @@ namespace GlossarySolution.Controllers
         {
             try
             {
+                Debug.WriteLine(part);
+
                 if (part == null)
                 {
                     return RedirectToAction("List");
                 }
 
-                var list = new List<DefinitionModel>();
                 var chars = part.Distinct();
+                var sb = new StringBuilder();
 
-                //var len = chars.Count();
-                //if (len > 64)
-                //    return RedirectToAction("List");
+                foreach (var c in chars)
+                    sb.Append(c);
 
+                var spart = sb.ToString();
                 int counter = 0;
-                part.ToUpper().ToCharArray().ToList().ForEach(c =>
+                var list = new List<DefinitionModel>();
+                spart.ToUpper().ToCharArray().ToList().ForEach(c =>
                 {
+                    Debug.WriteLine(c);
                     if (counter > 64) return;
                     var s = c.ToString();
-                    //if (!"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".Contains(c)) return;
 
                     var defs = (from d in db.Definitions
                                 where d.Term.StartsWith(s)
@@ -89,13 +93,15 @@ namespace GlossarySolution.Controllers
                     counter++;
                 });
 
-                ViewData["ListPart"] = part;
-                if (part != null)
+                ViewData["ListPart"] = spart;
+                if (spart != null)
                 {
-                    ViewData["ListPartDesc"] = $"({part[0]} - {part.Last()})".ToUpper();
+                    ViewData["ListPartDesc"] = $"({spart[0]} - {spart.Last()})".ToUpper();
                 }
 
                 return View("List", list);
+
+                //return RedirectToAction("List");
             }
             catch (Exception ex)
             {
@@ -108,8 +114,9 @@ namespace GlossarySolution.Controllers
         /// <summary>
         /// Main list of terms
         /// </summary>
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> List(string part)
         {
+            Debug.WriteLine(part);
             try
             {
                 var defs = await db.Definitions.ToListAsync();
