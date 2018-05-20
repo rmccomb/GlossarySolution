@@ -165,15 +165,25 @@ namespace GlossarySolution.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
-        //public async Task<ActionResult> Create([Bind(Include = "DefinitionId,Term,TermDefinition")] Definition definition)
-        public async Task<ActionResult> Create([Bind(Include = "DefinitionId,Term,TermDefinition")] Models.DefinitionModel model)
+        public async Task<ActionResult> Create([Bind(Include = "DefinitionId,Term,TermDefinition")] DefinitionModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var definition = new Definition { Term = model.Term, TermDefinition = model.TermDefinition };
-                    db.Definitions.Add(definition);
+                    var def = (from d in db.Definitions where d.Term == model.Term select d).FirstOrDefault();
+
+                    if (def != null)
+                    {
+                        //def.TermDefinition = model.TermDefinition;
+                        ModelState.AddModelError("Term", "A definition already exists for this Term");
+                        return View(model);
+                    }
+                    else
+                    {
+                        var definition = new Definition { Term = model.Term, TermDefinition = model.TermDefinition };
+                        db.Definitions.Add(definition);
+                    }
                     await db.SaveChangesAsync();
                     return RedirectToAction("List");
                 }
