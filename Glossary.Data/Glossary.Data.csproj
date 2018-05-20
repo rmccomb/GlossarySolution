@@ -95,9 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="dbo.Definition.sql" />
-    <Content Include="Glossary.DEV.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Glossary.DEV.mdf" />
     <Content Include="GlossaryModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GlossaryModel.Context.cs</LastGenOutput>
@@ -109,7 +107,6 @@
       <LastGenOutput>GlossaryModel.cs</LastGenOutput>
     </Content>
     <Content Include="Glossary.DEV_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Glossary.DEV.mdf</DependentUpon>
     </Content>
   </ItemGroup>

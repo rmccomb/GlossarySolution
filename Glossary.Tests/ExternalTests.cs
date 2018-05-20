@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Web.Script.Serialization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Glossary.Tests.External
 {
@@ -34,6 +35,16 @@ namespace Glossary.Tests.External
     public class ExternalTests
     {
         static readonly Uri uri = new Uri("http://localhost:59650/api/");
+
+        [ClassInitialize()]
+        public static void SetDataDirectory(TestContext testContext)
+        {
+            // Set the database path to the development data folder
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            int index = baseDir.IndexOf("Glossary.Tests");
+            var dataDir = Path.Combine(baseDir.Substring(0, index), "Glossary.Data");
+            AppDomain.CurrentDomain.SetData("DataDirectory", dataDir);
+        }
 
         private void GivenEmptyDataset()
         {
