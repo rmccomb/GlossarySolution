@@ -511,6 +511,21 @@
             Put an updated Definition
             </summary>
         </member>
+        <member name="T:GlossarySolution.Controllers.ErrorController">
+            <summary>
+            A handler for errors
+            </summary>
+        </member>
+        <member name="M:GlossarySolution.Controllers.ErrorController.Index">
+            <summary>
+            Default error handler
+            </summary>
+        </member>
+        <member name="M:GlossarySolution.Controllers.ErrorController.NotFound">
+            <summary>
+            Default handler 404 missing resource
+            </summary>
+        </member>
         <member name="T:GlossarySolution.Controllers.HomeController">
             <summary>
             The main controller
@@ -521,16 +536,11 @@
             Home page
             </summary>
         </member>
-        <member name="M:GlossarySolution.Controllers.HomeController.Contents(System.String)">
-            <summary>
-            Show the part list of terms
-            </summary>
-            <param name="part">Alphabetical part</param>
-        </member>
         <member name="M:GlossarySolution.Controllers.HomeController.List(System.String)">
             <summary>
             Main list of terms
             </summary>
+            <param name="part">Alphabetical part</param>
         </member>
         <member name="M:GlossarySolution.Controllers.HomeController.Details(System.Nullable{System.Int32})">
             <summary>

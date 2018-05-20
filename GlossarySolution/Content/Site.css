@@ -63,7 +63,6 @@
 
 .form-row-buttons {
     margin-left: 10px;
-
 }
 
 th {
@@ -97,4 +96,16 @@ pre code {
 
 .btn-outline-danger {
     background-color: #fa9c9c26;
+}
+
+.btn-outline-brand {
+    color: #53696e; /*#384143;*/
+    /*background-color: #d7ebf2;*/
+    background-image: none;
+    border-color: #f1f9f9;
+    border-width: 1px;
+}
+
+.bg-light {
+    background-color: #f1f8fe !important;
 }

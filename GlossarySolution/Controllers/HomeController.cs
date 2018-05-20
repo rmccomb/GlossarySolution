@@ -45,24 +45,29 @@ namespace GlossarySolution.Controllers
             }
         }
 
-        //public ActionResult Contents2()
-        //{
-        //    return View("Contents");
-        //}
 
+        // GET: List
         /// <summary>
-        /// Show the part list of terms
+        /// Main list of terms
         /// </summary>
         /// <param name="part">Alphabetical part</param>
-        public ActionResult Contents(string part)
+        public async Task<ActionResult> List(string part)
         {
+            Debug.WriteLine(part);
             try
             {
                 Debug.WriteLine(part);
 
                 if (part == null)
                 {
-                    return RedirectToAction("List");
+                    //var defs = await db.Definitions.ToListAsync();
+
+                    var defs = from d in db.Definitions orderby d.Term select d;
+
+                    var model = new List<DefinitionModel>(defs.Select(d => new
+                        DefinitionModel
+                    { DefinitionId = d.DefinitionId, Term = d.Term, TermDefinition = d.TermDefinition }));
+                    return View(model);
                 }
 
                 var chars = part.Distinct();
@@ -82,6 +87,7 @@ namespace GlossarySolution.Controllers
 
                     var defs = (from d in db.Definitions
                                 where d.Term.StartsWith(s)
+                                orderby d.Term
                                 select new DefinitionModel
                                 {
                                     DefinitionId = d.DefinitionId,
@@ -99,31 +105,7 @@ namespace GlossarySolution.Controllers
                     ViewData["ListPartDesc"] = $"({spart[0]} - {spart.Last()})".ToUpper();
                 }
 
-                return View("List", list);
-
-                //return RedirectToAction("List");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return RedirectToActionPermanent("Index", "Error");
-            }
-        }
-
-        // GET: List
-        /// <summary>
-        /// Main list of terms
-        /// </summary>
-        public async Task<ActionResult> List(string part)
-        {
-            Debug.WriteLine(part);
-            try
-            {
-                var defs = await db.Definitions.ToListAsync();
-                var model = new List<Models.DefinitionModel>(defs.Select(d => new
-                    Models.DefinitionModel
-                { DefinitionId = d.DefinitionId, Term = d.Term, TermDefinition = d.TermDefinition }));
-                return View(model);
+                return View(list);
             }
             catch (Exception ex)
             {

@@ -1,6 +1,12 @@
-﻿
+﻿@model GlossarySolution.Models.ErrorModel
+@{ 
+    var message = Model?.Message;
+}
 <h1 class="sub-title">Error</h1>
 
 <div class="alert alert-warning">An error occurred while processing your request</div>
 
-<div>@Model</div>
+@if (message != null)
+{
+<div class="bd-callout bd-callout-light">@message</div>
+}
