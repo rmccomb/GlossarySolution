@@ -237,16 +237,40 @@ namespace GlossarySolution.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
-        public async Task<ActionResult> Edit([Bind(Include = "DefinitionId,Term,TermDefinition")] Definition definition)
+        public async Task<ActionResult> Edit([Bind(Include = "DefinitionId,Term,TermDefinition")] DefinitionModel definition)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    db.Entry(definition).State = EntityState.Modified;
-                    await db.SaveChangesAsync();
-                    //return RedirectToAction("Details", definition.DefinitionId);
-                    return RedirectToAction("List");
+                    var def = (from d in db.Definitions where d.Term == definition.Term select d).FirstOrDefault();
+                    if (def != null)
+                    {
+                        if (def.DefinitionId != definition.DefinitionId)
+                        {
+                            // Validation error - there is an existing definition for that term
+                            ModelState.AddModelError("Term", "A definition already exists for this Term");
+                            return View(definition);
+                        }
+                        else
+                        {
+                            def.Term = definition.Term;
+                            def.TermDefinition = definition.TermDefinition;
+                            db.Entry(def).State = EntityState.Modified;
+                            await db.SaveChangesAsync();
+                            return RedirectToAction("List");
+                        }
+                    }
+                    else
+                    {
+                        // Re-defining current term (Term does not conflict with existing)
+                        var rename = (from d in db.Definitions where d.DefinitionId == definition.DefinitionId select d).FirstOrDefault();
+                        rename.Term = definition.Term;
+                        rename.TermDefinition = definition.TermDefinition;
+                        db.Entry(rename).State = EntityState.Modified;
+                        await db.SaveChangesAsync();
+                        return RedirectToAction("List");
+                    }
                 }
                 return View(definition);
             }

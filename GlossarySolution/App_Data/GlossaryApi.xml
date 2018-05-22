@@ -558,7 +558,7 @@
             Edit a given Term by ID
             </summary>
         </member>
-        <member name="M:GlossarySolution.Controllers.HomeController.Edit(Glossary.Data.Definition)">
+        <member name="M:GlossarySolution.Controllers.HomeController.Edit(GlossarySolution.Models.DefinitionModel)">
             <summary>
             Edit a given bound Term 
             </summary>
